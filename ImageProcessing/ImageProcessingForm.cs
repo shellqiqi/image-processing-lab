@@ -42,8 +42,37 @@ namespace ImageProcessing
 
                 histogramForm.Init(OriginImage);
 
+                saveToolStripMenuItem.Enabled = true;
                 viewToolStripMenuItem.Enabled = true;
                 toolToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                InitialDirectory = Application.StartupPath,
+                Filter = "JEPG图片|*.jpg|BMP图片|*.bmp|PNG图片|*.png",
+                RestoreDirectory = true
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                switch (sfd.FilterIndex)
+                {
+                    case 1:
+                        ResultImage.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        break;
+                    case 2:
+                        ResultImage.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Bmp);
+                        break;
+                    case 3:
+                        ResultImage.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
