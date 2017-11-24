@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -29,14 +30,37 @@ namespace ImageProcessing
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = Application.StartupPath,
-                Filter = "位图|*.bmp|所有文件|*.*",
+                Filter = "位图|*.bmp|自定义图像|*.dr|所有文件|*.*",
                 RestoreDirectory = true
             };
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 FilePath = ofd.FileName;
-                ResultImage = OriginImage = Image.FromFile(FilePath);
+
+                try
+                {
+                    if (ofd.FilterIndex == 2)
+                    {
+                        ResultImage = OriginImage = ImageProcessing.GetImageFromDr(FilePath);
+                    }
+                    else
+                    {
+                        ResultImage = OriginImage = Image.FromFile(FilePath);
+                    }
+                }
+                catch (Exception exp)
+                {
+                    MessageBox.Show(exp.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (OriginImage == null)
+                {
+                    MessageBox.Show("无法打开文件\n请检查打开方式", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 originPictureBox.Image = OriginImage;
                 resultPictureBox.Image = ResultImage;
 

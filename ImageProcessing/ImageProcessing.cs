@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -117,6 +118,52 @@ namespace ImageProcessing
                     }
                 }
             }
+            return bitmap;
+        }
+
+        /// <summary>
+        ///读取自定义文件
+        /// </summary>
+        public static Image GetImageFromDr(string filePath)
+        {
+            BinaryReader reader = new BinaryReader(new FileStream(filePath, FileMode.Open));
+            UInt16 width = reader.ReadUInt16();
+            UInt16 height = reader.ReadUInt16();
+            UInt16 BBP = reader.ReadUInt16();
+            UInt16 Sign = reader.ReadUInt16();
+            UInt16 MaxVal = reader.ReadUInt16();
+            Byte[] reserved = reader.ReadBytes(6);
+
+            Bitmap bitmap = new Bitmap(width, height);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int val = 0;
+                    if (BBP == 8)
+                    {
+                        if (Sign == 0)
+                            val = reader.ReadByte();
+                        else
+                            val = reader.ReadSByte();
+                    }
+                    else if (BBP == 16)
+                    {
+                        if (Sign == 0)
+                            val = reader.ReadUInt16();
+                        else
+                            val = reader.ReadInt16();
+                    }
+                    if (MaxVal != 255)
+                    {
+                        val = (int)((double)val / MaxVal * 255);
+                    }
+                    bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
+                }
+            }
+
+            reader.Close();
+
             return bitmap;
         }
     }
