@@ -31,6 +31,7 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,7 +39,7 @@
             this.originPictureBox = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.resultPictureBox = new System.Windows.Forms.PictureBox();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CLAHEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originPictureBox)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -69,9 +70,17 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Enabled = false;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -92,7 +101,8 @@
             // toolToolStripMenuItem
             // 
             this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.histogramEqualizationToolStripMenuItem});
+            this.histogramEqualizationToolStripMenuItem,
+            this.CLAHEToolStripMenuItem});
             this.toolToolStripMenuItem.Enabled = false;
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
             this.toolToolStripMenuItem.Size = new System.Drawing.Size(46, 21);
@@ -145,13 +155,12 @@
             this.resultPictureBox.TabIndex = 2;
             this.resultPictureBox.TabStop = false;
             // 
-            // saveToolStripMenuItem
+            // CLAHEToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Enabled = false;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.CLAHEToolStripMenuItem.Name = "CLAHEToolStripMenuItem";
+            this.CLAHEToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.CLAHEToolStripMenuItem.Text = "CLAHE";
+            this.CLAHEToolStripMenuItem.Click += new System.EventHandler(this.CLAHEToolStripMenuItem_Click);
             // 
             // ImageProcessingForm
             // 
@@ -187,6 +196,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.PictureBox resultPictureBox;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CLAHEToolStripMenuItem;
     }
 }
 

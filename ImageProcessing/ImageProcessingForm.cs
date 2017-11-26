@@ -120,5 +120,12 @@ namespace ImageProcessing
             resultPictureBox.Image = ResultImage;
             histogramForm.UpdateHistogram(ResultImage);
         }
+
+        private void CLAHEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResultImage = ImageProcessing.CLAHE(OriginImage);
+            resultPictureBox.Image = ResultImage;
+            histogramForm.UpdateHistogram(ResultImage);
+        }
     }
 }
