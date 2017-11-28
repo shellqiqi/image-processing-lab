@@ -167,173 +167,168 @@ namespace ImageProcessing
             return bitmap;
         }
 
-        public static Image CLAHE(Image src, int _step = 8)
+        public static Image CLAHE(Image src, int block = 8)
         {
             Bitmap srcBitmap = new Bitmap(src);
             Bitmap CLAHE_GO = new Bitmap(src);
-            int block = _step;//pblock
-            int width = src.Height;
-            int height = src.Width;
-            int width_block = width / block; //每个小格子的长和宽
-            int height_block = height / block;
-            //存储各个直方图  
-            int[,] tmp2 = new int[8 * 8, 256];
-            float[,] C2 = new float[8 * 8, 256];
-            //分块
-            int total = width_block * height_block;
-            for (int i = 0; i < block; i++)
+            // 图像的长和宽
+            int width = src.Width;
+            int height = src.Height;
+            // 每个小格子的长和宽
+            int blockWidth = width / block;
+            int blockHeight = height / block;
+            // 图像分割覆盖的长和宽
+            int claheWidth = blockWidth * block;
+            int claheHeight = blockHeight * block;
+            // 存储各个直方图  
+            int[,,] PDF = new int[block, block, 256];
+            double[,,] CDF = new double[block, block, 256];
+            // 每块的像素数量
+            int totalPixelCount = blockWidth * blockHeight;
+            for (int yBlockIndex = 0; yBlockIndex < block; yBlockIndex++)
             {
-                for (int j = 0; j < block; j++)
+                for (int xBlockIndex = 0; xBlockIndex < block; xBlockIndex++)
                 {
-                    int start_x = i * width_block;
-                    int end_x = start_x + width_block;
-                    int start_y = j * height_block;
-                    int end_y = start_y + height_block;
-                    int num = i + block * j;
+                    int start_x = xBlockIndex * blockWidth;
+                    int end_x = start_x + blockWidth;
+                    int start_y = yBlockIndex * blockHeight;
+                    int end_y = start_y + blockHeight;
                     //遍历小块,计算直方图
-                    for (int ii = start_x; ii < end_x; ii++)
+                    for (int y = start_y; y < end_y; y++)
                     {
-                        for (int jj = start_y; jj < end_y; jj++)
+                        for (int x = start_x; x < end_x; x++)
                         {
-                            int index = srcBitmap.GetPixel(jj, ii).R;
-                            tmp2[num, index]++;
+                            int grayValue = srcBitmap.GetPixel(x, y).R;
+                            PDF[xBlockIndex, yBlockIndex, grayValue]++;
                         }
                     }
-                    //裁剪和增加操作，也就是clahe中的cl部分
-                    //这里的参数 对应《Gem》上面 fCliplimit  = 4  , uiNrBins  = 255
-                    int average = width_block * height_block / 255;
-                    //关于参数如何选择，需要进行讨论。不同的结果进行讨论
-                    //关于全局的时候，这里的这个cl如何算，需要进行讨论 
-                    int LIMIT = 40 * average;
-                    int steal = 0;
-                    for (int k = 0; k < 256; k++)
-                    {
-                        if (tmp2[num,k] > LIMIT)
-                        {
-                            steal += tmp2[num,k] - LIMIT;
-                            tmp2[num,k] = LIMIT;
-                        }
-                    }
-                    int bonus = steal / 256;
-                    //hand out the steals averagely  
-                    for (int k = 0; k < 256; k++)
-                    {
-                        tmp2[num,k] += bonus;
-                    }
+                    ////裁剪和增加操作，也就是clahe中的cl部分
+                    ////这里的参数 对应《Gem》上面 fCliplimit  = 4  , uiNrBins  = 255
+                    //int average = blockWidth * blockHeight / 255;
+                    ////关于参数如何选择，需要进行讨论。不同的结果进行讨论
+                    ////关于全局的时候，这里的这个cl如何算，需要进行讨论 
+                    //int limit = 40 * average;
+                    //int steal = 0;
+                    //for (int grayValue = 0; grayValue < 256; grayValue++)
+                    //{
+                    //    if (PDF[xBlockIndex, yBlockIndex, grayValue] > limit)
+                    //    {
+                    //        steal += PDF[xBlockIndex, yBlockIndex, grayValue] - limit;
+                    //        PDF[xBlockIndex, yBlockIndex, grayValue] = limit;
+                    //    }
+                    //}
+                    //int bonus = steal / 256;
+                    ////hand out the steals averagely  
+                    //for (int grayValue = 0; grayValue < 256; grayValue++)
+                    //{
+                    //    PDF[xBlockIndex, yBlockIndex, grayValue] += bonus;
+                    //}
                     //计算累积分布直方图  
-                    for (int k = 0; k < 256; k++)
+                    for (int grayValue = 0; grayValue < 256; grayValue++)
                     {
-                        if (k == 0)
-                            C2[num,k] = 1.0f * tmp2[num,k] / total;
+                        if (grayValue == 0)
+                            CDF[xBlockIndex, yBlockIndex, grayValue] = (double)PDF[xBlockIndex, yBlockIndex, grayValue] / totalPixelCount;
                         else
-                            C2[num,k] = C2[num,k - 1] + 1.0f * tmp2[num,k] / total;
+                            CDF[xBlockIndex, yBlockIndex, grayValue] = CDF[xBlockIndex, yBlockIndex, grayValue - 1] + (double)PDF[xBlockIndex, yBlockIndex, grayValue] / totalPixelCount;
                     }
                 }
             }
             //计算变换后的像素值  
             //根据像素点的位置，选择不同的计算方法  
-            for (int i = 0; i < width; i++)
+            for (int y = 0; y < claheHeight; y++)
             {
-                for (int j = 0; j < height; j++)
+                for (int x = 0; x < claheWidth; x++)
                 {
-                    //four coners  
-                    if (i <= width_block / 2 && j <= height_block / 2)
+                    /* corners */
+                    // top left corner
+                    if (x <= blockWidth / 2 && y <= blockHeight / 2)
                     {
-                        int num = 0;
-                        int gray = (int)(C2[num, CLAHE_GO.GetPixel(j, i).R] * 255);
-                        Color color = Color.FromArgb(gray, gray, gray);
-                        CLAHE_GO.SetPixel(j, i, color);
+                        int gray = (int)(CDF[0, 0, CLAHE_GO.GetPixel(x, y).R] * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    else if (i <= width_block / 2 && j >= ((block - 1) * height_block + height_block / 2))
+                    // top right corner
+                    else if (x >= claheWidth - blockWidth / 2 && y <= blockHeight / 2)
                     {
-                        int num = block * (block - 1);
-                        int gray = (int)(C2[num, CLAHE_GO.GetPixel(j, i).R] * 255);
-                        Color color = Color.FromArgb(gray, gray, gray);
-                        CLAHE_GO.SetPixel(j, i, color);
+                        int gray = (int)(CDF[block - 1, 0, CLAHE_GO.GetPixel(x, y).R] * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    else if (i >= ((block - 1) * width_block + width_block / 2) && j <= height_block / 2)
+                    // bottom left corner
+                    else if (x <= blockWidth / 2 && y >= claheHeight - blockHeight / 2)
                     {
-                        int num = block - 1;
-                        int gray = (int)(C2[num, CLAHE_GO.GetPixel(j, i).R] * 255);
-                        Color color = Color.FromArgb(gray, gray, gray);
-                        CLAHE_GO.SetPixel(j, i, color);
+                        int gray = (int)(CDF[0, block - 1, CLAHE_GO.GetPixel(x, y).R] * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    else if (i >= ((block - 1) * width_block + width_block / 2) && j >= ((block - 1) * height_block + height_block / 2))
+                    // bottom right corner
+                    else if (x >= claheWidth - blockWidth / 2 && y >= claheHeight - blockHeight / 2)
                     {
-                        int num = block * block - 1;
-                        int gray = (int)(C2[num, CLAHE_GO.GetPixel(j, i).R] * 255);
-                        Color color = Color.FromArgb(gray, gray, gray);
-                        CLAHE_GO.SetPixel(j, i, color);
+                        int gray = (int)(CDF[block - 1, block - 1, CLAHE_GO.GetPixel(x, y).R] * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    //four edges except coners  
-                    else if (i <= width_block / 2)
+                    /* edges */
+                    // left edge
+                    else if (x <= blockWidth / 2)
                     {
-                        //线性插值  
-                        int num_i = 0;
-                        int num_j = (j - height_block / 2) / height_block;
-                        int num1 = num_j * block + num_i;
-                        int num2 = num1 + block;
-                        float p = (j - (num_j * height_block + height_block / 2)) / (1.0f * height_block);
-                        float q = 1 - p;
-                        int gray = (int)((q * C2[num1, CLAHE_GO.GetPixel(j, i).R] + p * C2[num2, CLAHE_GO.GetPixel(j, i).R]) * 255);
-                        CLAHE_GO.SetPixel(j, i, Color.FromArgb(gray, gray, gray));
+                        int xBlockIndex = 0;
+                        int yBlockIndex = (y - blockHeight / 2 - 1) / blockHeight;
+
+                        double q = (y - ((double)yBlockIndex * blockHeight + blockHeight / 2)) / blockHeight;
+                        double p = 1 - q;
+
+                        int gray = (int)((p * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] + q * CDF[xBlockIndex, yBlockIndex + 1, CLAHE_GO.GetPixel(x, y).R]) * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    else if (i >= ((block - 1) * width_block + width_block / 2))
+                    // right edge
+                    else if (x >= (claheWidth - blockWidth / 2))
                     {
-                        //线性插值  
-                        int num_i = block - 1;
-                        int num_j = (j - height_block / 2) / height_block;
-                        int num1 = num_j * block + num_i;
-                        int num2 = num1 + block;
-                        float p = (j - (num_j * height_block + height_block / 2)) / (1.0f * height_block);
-                        float q = 1 - p;
-                        int gray = (int)((q * C2[num1, CLAHE_GO.GetPixel(j, i).R] + p * C2[num2, CLAHE_GO.GetPixel(j, i).R]) * 255);
-                        CLAHE_GO.SetPixel(j, i, Color.FromArgb(gray, gray, gray));
+                        int xBlockIndex = block - 1;
+                        int yBlockIndex = (y - blockHeight / 2 - 1) / blockHeight;
+
+                        double q = (y - ((double)yBlockIndex * blockHeight + blockHeight / 2)) / blockHeight;
+                        double p = 1 - q;
+
+                        int gray = (int)((p * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] + q * CDF[xBlockIndex, yBlockIndex + 1, CLAHE_GO.GetPixel(x, y).R]) * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    else if (j <= height_block / 2)
+                    // top edge
+                    else if (y <= blockHeight / 2)
                     {
-                        //线性插值  
-                        int num_i = (i - width_block / 2) / width_block;
-                        int num_j = 0;
-                        int num1 = num_j * block + num_i;
-                        int num2 = num1 + 1;
-                        float p = (i - (num_i * width_block + width_block / 2)) / (1.0f * width_block);
-                        float q = 1 - p;
-                        int gray = (int)((q * C2[num1, CLAHE_GO.GetPixel(j, i).R] + p * C2[num2, CLAHE_GO.GetPixel(j, i).R]) * 255);
-                        CLAHE_GO.SetPixel(j, i, Color.FromArgb(gray, gray, gray));
+                        int xBlockIndex = (x - blockWidth / 2 - 1) / blockWidth;
+                        int yBlockIndex = 0;
+
+                        double q = (x - ((double)xBlockIndex * blockHeight + blockWidth / 2)) / blockWidth;
+                        double p = 1 - q;
+
+                        int gray = (int)((p * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] + q * CDF[xBlockIndex + 1, yBlockIndex, CLAHE_GO.GetPixel(x, y).R]) * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    else if (j >= ((block - 1) * height_block + height_block / 2))
+                    // bottom edge
+                    else if (y >= (claheHeight - blockHeight / 2))
                     {
-                        //线性插值  
-                        int num_i = (i - width_block / 2) / width_block;
-                        int num_j = block - 1;
-                        int num1 = num_j * block + num_i;
-                        int num2 = num1 + 1;
-                        float p = (i - (num_i * width_block + width_block / 2)) / (1.0f * width_block);
-                        float q = 1 - p;
-                        int gray = (int)((q * C2[num1, CLAHE_GO.GetPixel(j, i).R] + p * C2[num2, CLAHE_GO.GetPixel(j, i).R]) * 255);
-                        CLAHE_GO.SetPixel(j, i, Color.FromArgb(gray, gray, gray));
+                        int xBlockIndex = (x - blockWidth / 2 - 1) / blockWidth;
+                        int yBlockIndex = block - 1;
+
+                        double q = (x - ((double)xBlockIndex * blockHeight + blockWidth / 2)) / blockWidth;
+                        double p = 1 - q;
+
+                        int gray = (int)((p * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] + q * CDF[xBlockIndex + 1, yBlockIndex, CLAHE_GO.GetPixel(x, y).R]) * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    //双线性插值
+                    /* Inner */
                     else
                     {
-                        int num_i = (i - width_block / 2) / width_block;
-                        int num_j = (j - height_block / 2) / height_block;
-                        int num1 = num_j * block + num_i;
-                        int num2 = num1 + 1;
-                        int num3 = num1 + block;
-                        int num4 = num2 + block;
-                        float u = (i - (num_i * width_block + width_block / 2)) / (1.0f * width_block);
-                        float v = (j - (num_j * height_block + height_block / 2)) / (1.0f * height_block);
-                        int gray = (int)((u * v * C2[num4, CLAHE_GO.GetPixel(j, i).R] +
-                                            (1 - v) * (1 - u) * C2[num1, CLAHE_GO.GetPixel(j, i).R] +
-                                            u * (1 - v) * C2[num2, CLAHE_GO.GetPixel(j, i).R] +
-                                            v * (1 - u) * C2[num3, CLAHE_GO.GetPixel(j, i).R]) * 255);
-                        CLAHE_GO.SetPixel(j, i, Color.FromArgb(gray, gray, gray));
+                        int xBlockIndex = (x - blockWidth / 2 - 1) / blockWidth;
+                        int yBlockIndex = (y - blockHeight / 2 - 1) / blockHeight;
+
+                        double qx = (x - ((double)xBlockIndex * blockWidth + blockWidth / 2)) / blockWidth;
+                        double px = 1 - qx;
+                        double qy = (y - ((double)yBlockIndex * blockHeight + blockHeight / 2)) / blockHeight;
+                        double py = 1 - qy;
+                        int gray = (int)((qx * qy * CDF[xBlockIndex + 1, yBlockIndex + 1, CLAHE_GO.GetPixel(x, y).R] +
+                                            px * py * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] +
+                                            px * qy * CDF[xBlockIndex, yBlockIndex + 1, CLAHE_GO.GetPixel(x, y).R] +
+                                            qx * py * CDF[xBlockIndex + 1, yBlockIndex, CLAHE_GO.GetPixel(x, y).R]) * 255);
+                        CLAHE_GO.SetPixel(x, y, Color.FromArgb(gray, gray, gray));
                     }
-                    //最后这步，类似高斯平滑
-                    //int g = CLAHE_GO.GetPixel(j, i).R + (CLAHE_GO.GetPixel(j, i).R << 8) + (CLAHE_GO.GetPixel(j, i).R << 16);
-                    //CLAHE_GO.SetPixel(j, i, Color.FromArgb(g, g, g));
                 }
             }
             return CLAHE_GO;
