@@ -55,7 +55,7 @@ namespace ImageProcessing
         /// <summary>
         ///直方图均衡算法
         /// </summary>
-        public static Image HistogramEqualization(Image image)
+        public static Image HistogramEqualization(Image image, bool isSeparatedChannel)
         {
             double[,] imageCDF = GetCDF(image);
             Bitmap bitmap = new Bitmap(image);
@@ -66,7 +66,17 @@ namespace ImageProcessing
                     int R = (int)(imageCDF[0, bitmap.GetPixel(x, y).R] * 255);
                     int G = (int)(imageCDF[1, bitmap.GetPixel(x, y).G] * 255);
                     int B = (int)(imageCDF[2, bitmap.GetPixel(x, y).B] * 255);
-                    bitmap.SetPixel(x, y, Color.FromArgb(R, G, B));
+                    if (isSeparatedChannel)
+                    {
+                        bitmap.SetPixel(x, y, Color.FromArgb(R, G, B));
+                    }
+                    else
+                    {
+                        bitmap.SetPixel(x, y, ColorFromHSV(
+                            bitmap.GetPixel(x, y).GetHue(),
+                            bitmap.GetPixel(x, y).GetSaturation(),
+                            Color.FromArgb(R, G, B).GetBrightness()));
+                    }
                 }
             }
             return bitmap;
@@ -167,6 +177,9 @@ namespace ImageProcessing
             return bitmap;
         }
 
+        /// <summary>
+        ///HSV转化为RGB
+        /// </summary>
         public static Color ColorFromHSV(double hue, double saturation, double value)
         {
             int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
@@ -192,6 +205,9 @@ namespace ImageProcessing
                 return Color.FromArgb(255, v, p, q);
         }
 
+        /// <summary>
+        ///限制对比度自适应直方图均衡化
+        /// </summary>
         public static Image CLAHE(Image src, int block = 8)
         {
             Bitmap srcBitmap = new Bitmap(src);

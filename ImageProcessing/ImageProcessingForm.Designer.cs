@@ -36,10 +36,12 @@
             this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.histogramEqualizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CLAHEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.originPictureBox = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.resultPictureBox = new System.Windows.Forms.PictureBox();
-            this.CLAHEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.separatedRGBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allChannelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originPictureBox)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -110,10 +112,19 @@
             // 
             // histogramEqualizationToolStripMenuItem
             // 
+            this.histogramEqualizationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.separatedRGBToolStripMenuItem,
+            this.allChannelsToolStripMenuItem});
             this.histogramEqualizationToolStripMenuItem.Name = "histogramEqualizationToolStripMenuItem";
             this.histogramEqualizationToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.histogramEqualizationToolStripMenuItem.Text = "Histogram Equalization";
-            this.histogramEqualizationToolStripMenuItem.Click += new System.EventHandler(this.HistogramEqualizationToolStripMenuItem_Click);
+            // 
+            // CLAHEToolStripMenuItem
+            // 
+            this.CLAHEToolStripMenuItem.Name = "CLAHEToolStripMenuItem";
+            this.CLAHEToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.CLAHEToolStripMenuItem.Text = "CLAHE";
+            this.CLAHEToolStripMenuItem.Click += new System.EventHandler(this.CLAHEToolStripMenuItem_Click);
             // 
             // originPictureBox
             // 
@@ -155,12 +166,19 @@
             this.resultPictureBox.TabIndex = 2;
             this.resultPictureBox.TabStop = false;
             // 
-            // CLAHEToolStripMenuItem
+            // separatedRGBToolStripMenuItem
             // 
-            this.CLAHEToolStripMenuItem.Name = "CLAHEToolStripMenuItem";
-            this.CLAHEToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.CLAHEToolStripMenuItem.Text = "CLAHE";
-            this.CLAHEToolStripMenuItem.Click += new System.EventHandler(this.CLAHEToolStripMenuItem_Click);
+            this.separatedRGBToolStripMenuItem.Name = "separatedRGBToolStripMenuItem";
+            this.separatedRGBToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.separatedRGBToolStripMenuItem.Text = "Separated RGB";
+            this.separatedRGBToolStripMenuItem.Click += new System.EventHandler(this.separatedRGBToolStripMenuItem_Click);
+            // 
+            // allChannelsToolStripMenuItem
+            // 
+            this.allChannelsToolStripMenuItem.Name = "allChannelsToolStripMenuItem";
+            this.allChannelsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.allChannelsToolStripMenuItem.Text = "All channels";
+            this.allChannelsToolStripMenuItem.Click += new System.EventHandler(this.allChannelsToolStripMenuItem_Click);
             // 
             // ImageProcessingForm
             // 
@@ -197,6 +215,8 @@
         private System.Windows.Forms.PictureBox resultPictureBox;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CLAHEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem separatedRGBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allChannelsToolStripMenuItem;
     }
 }
 

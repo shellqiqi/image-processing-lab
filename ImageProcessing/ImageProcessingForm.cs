@@ -113,18 +113,27 @@ namespace ImageProcessing
             }
         }
 
-        // 直方图均衡
-        private void HistogramEqualizationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ResultImage = ImageProcessing.HistogramEqualization(OriginImage);
-            resultPictureBox.Image = ResultImage;
-            histogramForm.UpdateHistogram(ResultImage);
-        }
 
         private void CLAHEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CLAHEForm CLAHEForm = new CLAHEForm(this);
             CLAHEForm.ShowDialog();
+            resultPictureBox.Image = ResultImage;
+            histogramForm.UpdateHistogram(ResultImage);
+        }
+
+        // 直方图均衡(全通道)
+        private void separatedRGBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResultImage = ImageProcessing.HistogramEqualization(OriginImage, true);
+            resultPictureBox.Image = ResultImage;
+            histogramForm.UpdateHistogram(ResultImage);
+        }
+
+        // 直方图均衡(分通道)
+        private void allChannelsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResultImage = ImageProcessing.HistogramEqualization(OriginImage, false);
             resultPictureBox.Image = ResultImage;
             histogramForm.UpdateHistogram(ResultImage);
         }
