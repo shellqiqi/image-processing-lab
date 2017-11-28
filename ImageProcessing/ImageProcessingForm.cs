@@ -123,7 +123,8 @@ namespace ImageProcessing
 
         private void CLAHEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ResultImage = ImageProcessing.CLAHE(OriginImage);
+            CLAHEForm CLAHEForm = new CLAHEForm(this);
+            CLAHEForm.ShowDialog();
             resultPictureBox.Image = ResultImage;
             histogramForm.UpdateHistogram(ResultImage);
         }

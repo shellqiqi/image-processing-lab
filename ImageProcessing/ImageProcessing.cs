@@ -202,27 +202,30 @@ namespace ImageProcessing
                             PDF[xBlockIndex, yBlockIndex, grayValue]++;
                         }
                     }
-                    ////裁剪和增加操作，也就是clahe中的cl部分
-                    ////这里的参数 对应《Gem》上面 fCliplimit  = 4  , uiNrBins  = 255
-                    //int average = blockWidth * blockHeight / 255;
-                    ////关于参数如何选择，需要进行讨论。不同的结果进行讨论
-                    ////关于全局的时候，这里的这个cl如何算，需要进行讨论 
-                    //int limit = 40 * average;
-                    //int steal = 0;
-                    //for (int grayValue = 0; grayValue < 256; grayValue++)
-                    //{
-                    //    if (PDF[xBlockIndex, yBlockIndex, grayValue] > limit)
-                    //    {
-                    //        steal += PDF[xBlockIndex, yBlockIndex, grayValue] - limit;
-                    //        PDF[xBlockIndex, yBlockIndex, grayValue] = limit;
-                    //    }
-                    //}
-                    //int bonus = steal / 256;
-                    ////hand out the steals averagely  
-                    //for (int grayValue = 0; grayValue < 256; grayValue++)
-                    //{
-                    //    PDF[xBlockIndex, yBlockIndex, grayValue] += bonus;
-                    //}
+
+                    /* 限制对比度 */
+                    //裁剪和增加操作，也就是clahe中的cl部分
+                    //这里的参数 对应《Gem》上面 fCliplimit  = 4  , uiNrBins  = 255
+                    int average = blockWidth * blockHeight / 255;
+                    //关于参数如何选择，需要进行讨论。不同的结果进行讨论
+                    //关于全局的时候，这里的这个cl如何算，需要进行讨论 
+                    int limit = 40 * average;
+                    int steal = 0;
+                    for (int grayValue = 0; grayValue < 256; grayValue++)
+                    {
+                        if (PDF[xBlockIndex, yBlockIndex, grayValue] > limit)
+                        {
+                            steal += PDF[xBlockIndex, yBlockIndex, grayValue] - limit;
+                            PDF[xBlockIndex, yBlockIndex, grayValue] = limit;
+                        }
+                    }
+                    int bonus = steal / 256;
+                    //hand out the steals averagely  
+                    for (int grayValue = 0; grayValue < 256; grayValue++)
+                    {
+                        PDF[xBlockIndex, yBlockIndex, grayValue] += bonus;
+                    }
+
                     //计算累积分布直方图  
                     for (int grayValue = 0; grayValue < 256; grayValue++)
                     {
@@ -295,7 +298,7 @@ namespace ImageProcessing
                         int xBlockIndex = (x - blockWidth / 2 - 1) / blockWidth;
                         int yBlockIndex = 0;
 
-                        double q = (x - ((double)xBlockIndex * blockHeight + blockWidth / 2)) / blockWidth;
+                        double q = (x - ((double)xBlockIndex * blockWidth + blockWidth / 2)) / blockWidth;
                         double p = 1 - q;
 
                         int gray = (int)((p * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] + q * CDF[xBlockIndex + 1, yBlockIndex, CLAHE_GO.GetPixel(x, y).R]) * 255);
@@ -307,7 +310,7 @@ namespace ImageProcessing
                         int xBlockIndex = (x - blockWidth / 2 - 1) / blockWidth;
                         int yBlockIndex = block - 1;
 
-                        double q = (x - ((double)xBlockIndex * blockHeight + blockWidth / 2)) / blockWidth;
+                        double q = (x - ((double)xBlockIndex * blockWidth + blockWidth / 2)) / blockWidth;
                         double p = 1 - q;
 
                         int gray = (int)((p * CDF[xBlockIndex, yBlockIndex, CLAHE_GO.GetPixel(x, y).R] + q * CDF[xBlockIndex + 1, yBlockIndex, CLAHE_GO.GetPixel(x, y).R]) * 255);

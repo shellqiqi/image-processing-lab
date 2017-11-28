@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLAHEForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CLAHEForm.Designer.cs">
+      <DependentUpon>CLAHEForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="HistogramForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +64,9 @@
     <Compile Include="ImageProcessing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CLAHEForm.resx">
+      <DependentUpon>CLAHEForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HistogramForm.resx">
       <DependentUpon>HistogramForm.cs</DependentUpon>
     </EmbeddedResource>
