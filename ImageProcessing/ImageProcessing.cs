@@ -208,7 +208,7 @@ namespace ImageProcessing
         /// <summary>
         ///限制对比度自适应直方图均衡化
         /// </summary>
-        public static Image CLAHE(Image src, int block = 8)
+        public static Image CLAHE(Image src, int block, double contrastLimit)
         {
             Bitmap srcBitmap = new Bitmap(src);
             // 图像的长和宽
@@ -244,12 +244,11 @@ namespace ImageProcessing
                     }
 
                     /* 限制对比度 */
-                    //裁剪和增加操作，也就是clahe中的cl部分
-                    //这里的参数 对应《Gem》上面 fCliplimit  = 4  , uiNrBins  = 255
-                    int average = blockWidth * blockHeight / 255;
-                    //关于参数如何选择，需要进行讨论。不同的结果进行讨论
-                    //关于全局的时候，这里的这个cl如何算，需要进行讨论 
-                    int limit = 40 * average;
+                    // 平均分布密度
+                    int average = totalPixelCount / 256;
+                    // 限制累计分布密度斜率
+                    int limit = (int)(contrastLimit * average);
+                    // 超出部分
                     int steal = 0;
                     for (int grayValue = 0; grayValue < 256; grayValue++)
                     {
@@ -260,7 +259,7 @@ namespace ImageProcessing
                         }
                     }
                     int bonus = steal / 256;
-                    //hand out the steals averagely  
+                    // 平均重分布
                     for (int grayValue = 0; grayValue < 256; grayValue++)
                     {
                         PDF[xBlockIndex, yBlockIndex, grayValue] += bonus;

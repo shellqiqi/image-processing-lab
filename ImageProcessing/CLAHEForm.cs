@@ -19,15 +19,16 @@ namespace ImageProcessing
             parentForm = p;
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void OKButton_Click(object sender, EventArgs e)
+        private void executeButton_Click(object sender, EventArgs e)
         {
             int split = (int)splitNumericUpDown.Value;
-            parentForm.ResultImage = ImageProcessing.CLAHE(parentForm.OriginImage, split);
+            double limit = (double)limitNumericUpDown.Value;
+            parentForm.ResultImage = ImageProcessing.CLAHE(parentForm.OriginImage, split, limit);
+            parentForm.refreshImage();
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
             Close();
         }
     }

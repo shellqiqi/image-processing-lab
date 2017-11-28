@@ -31,10 +31,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitLabel = new System.Windows.Forms.Label();
             this.splitNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.OKButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.executeButton = new System.Windows.Forms.Button();
+            this.exitButton = new System.Windows.Forms.Button();
+            this.limitLabel = new System.Windows.Forms.Label();
+            this.limitNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.limitNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -42,14 +45,17 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.splitLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.splitNumericUpDown, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.OKButton, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cancelButton, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.executeButton, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.exitButton, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.splitLabel, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.limitLabel, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.limitNumericUpDown, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -88,31 +94,63 @@
             0,
             0});
             // 
-            // OKButton
+            // executeButton
             // 
-            this.OKButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.OKButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.OKButton.Location = new System.Drawing.Point(47, 221);
-            this.OKButton.Margin = new System.Windows.Forms.Padding(3, 10, 20, 10);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(75, 30);
-            this.OKButton.TabIndex = 2;
-            this.OKButton.Text = "OK";
-            this.OKButton.UseVisualStyleBackColor = true;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.executeButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.executeButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.executeButton.Location = new System.Drawing.Point(47, 221);
+            this.executeButton.Margin = new System.Windows.Forms.Padding(3, 10, 20, 10);
+            this.executeButton.Name = "executeButton";
+            this.executeButton.Size = new System.Drawing.Size(75, 30);
+            this.executeButton.TabIndex = 2;
+            this.executeButton.Text = "Execute";
+            this.executeButton.UseVisualStyleBackColor = true;
+            this.executeButton.Click += new System.EventHandler(this.executeButton_Click);
             // 
-            // cancelButton
+            // exitButton
             // 
-            this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cancelButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cancelButton.Location = new System.Drawing.Point(162, 221);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(20, 10, 3, 10);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 30);
-            this.cancelButton.TabIndex = 3;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.exitButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.exitButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.exitButton.Location = new System.Drawing.Point(162, 221);
+            this.exitButton.Margin = new System.Windows.Forms.Padding(20, 10, 3, 10);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(75, 30);
+            this.exitButton.TabIndex = 3;
+            this.exitButton.Text = "Exit";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
+            // 
+            // limitLabel
+            // 
+            this.limitLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.limitLabel.AutoSize = true;
+            this.limitLabel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.limitLabel.Location = new System.Drawing.Point(33, 59);
+            this.limitLabel.Margin = new System.Windows.Forms.Padding(10);
+            this.limitLabel.Name = "limitLabel";
+            this.limitLabel.Size = new System.Drawing.Size(99, 20);
+            this.limitLabel.TabIndex = 0;
+            this.limitLabel.Text = "Contrast limit";
+            // 
+            // limitNumericUpDown
+            // 
+            this.limitNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.limitNumericUpDown.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.limitNumericUpDown.Location = new System.Drawing.Point(152, 56);
+            this.limitNumericUpDown.Margin = new System.Windows.Forms.Padding(10);
+            this.limitNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.limitNumericUpDown.Name = "limitNumericUpDown";
+            this.limitNumericUpDown.Size = new System.Drawing.Size(120, 26);
+            this.limitNumericUpDown.TabIndex = 1;
+            this.limitNumericUpDown.Value = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
             // 
             // CLAHEForm
             // 
@@ -125,6 +163,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.limitNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -134,7 +173,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label splitLabel;
         private System.Windows.Forms.NumericUpDown splitNumericUpDown;
-        private System.Windows.Forms.Button OKButton;
-        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button executeButton;
+        private System.Windows.Forms.Button exitButton;
+        private System.Windows.Forms.Label limitLabel;
+        private System.Windows.Forms.NumericUpDown limitNumericUpDown;
     }
 }

@@ -72,6 +72,7 @@ namespace ImageProcessing
             }
         }
 
+        // 保存图片
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog
@@ -100,6 +101,13 @@ namespace ImageProcessing
             }
         }
 
+        // 刷新图片与直方图
+        public void refreshImage()
+        {
+            resultPictureBox.Image = ResultImage;
+            histogramForm.UpdateHistogram(ResultImage);
+        }
+
         // 显示直方图
         private void HistogramToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -113,29 +121,25 @@ namespace ImageProcessing
             }
         }
 
-
+        // 显示CLAHE配置窗口
         private void CLAHEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CLAHEForm CLAHEForm = new CLAHEForm(this);
-            CLAHEForm.ShowDialog();
-            resultPictureBox.Image = ResultImage;
-            histogramForm.UpdateHistogram(ResultImage);
+            CLAHEForm form = new CLAHEForm(this);
+            form.ShowDialog();
         }
 
         // 直方图均衡(全通道)
         private void separatedRGBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResultImage = ImageProcessing.HistogramEqualization(OriginImage, true);
-            resultPictureBox.Image = ResultImage;
-            histogramForm.UpdateHistogram(ResultImage);
+            refreshImage();
         }
 
         // 直方图均衡(分通道)
         private void allChannelsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResultImage = ImageProcessing.HistogramEqualization(OriginImage, false);
-            resultPictureBox.Image = ResultImage;
-            histogramForm.UpdateHistogram(ResultImage);
+            refreshImage();
         }
     }
 }
