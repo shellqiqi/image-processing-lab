@@ -55,6 +55,12 @@
     <Compile Include="HistogramForm.Designer.cs">
       <DependentUpon>HistogramForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageAdjustForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageAdjustForm.Designer.cs">
+      <DependentUpon>ImageAdjustForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageProcessingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HistogramForm.resx">
       <DependentUpon>HistogramForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageAdjustForm.resx">
+      <DependentUpon>ImageAdjustForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageProcessingForm.resx">
       <DependentUpon>ImageProcessingForm.cs</DependentUpon>

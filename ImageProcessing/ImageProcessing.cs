@@ -132,7 +132,7 @@ namespace ImageProcessing
         }
 
         /// <summary>
-        ///读取自定义文件
+        ///读取医学图像
         /// </summary>
         public static Image GetImageFromDr(string filePath)
         {
@@ -616,5 +616,31 @@ namespace ImageProcessing
             return srcBitmap;
         }
 
+        /// <summary>
+        ///灰度窗方法
+        /// </summary>
+        public static Image ImageAdjust(Image src,
+            double low_in = 0d, double high_in = 1d,
+            double low_out = 0d, double high_out = 1d,
+            double gamma = 0d)
+        {
+            Bitmap bitmap = new Bitmap(src);
+            if (high_in - low_in == 0 || gamma == 0)
+            {
+                return bitmap;
+            }
+            for (int y = 0; y < src.Height; y++)
+            {
+                for (int x = 0; x < src.Width; x++)
+                {
+                    double brightness = bitmap.GetPixel(x, y).GetBrightness();
+                    brightness = (brightness >= low_in && brightness <= high_in) ? brightness : 0d;
+                    brightness = low_out + Math.Pow((brightness - low_in) / (high_in - low_in), gamma) * (high_out - low_out);
+                    Byte val = (Byte)(brightness * 255);
+                    bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
+                }
+            }
+            return bitmap;
+        }
     }
 }

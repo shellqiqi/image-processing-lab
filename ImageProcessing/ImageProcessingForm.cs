@@ -15,7 +15,7 @@ namespace ImageProcessing
         public ImageProcessingForm()
         {
             InitializeComponent();
-
+            resultPictureBox.MouseWheel += new MouseEventHandler(resultPictureBox_MouseWheel);
             histogramForm = new HistogramForm();
         }
 
@@ -23,6 +23,11 @@ namespace ImageProcessing
         public Image OriginImage { get; set; }
         public Image ResultImage { get; set; }
         public HistogramForm histogramForm;
+        private bool isMouseDown;
+        private double scaleRatio;
+        private double minRatio;
+        private Point PreMousePosition;
+        private Point PicturePosition;
 
         // 打开图片
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -30,7 +35,7 @@ namespace ImageProcessing
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = Application.StartupPath,
-                Filter = "位图|*.bmp|自定义图像|*.dr|所有文件|*.*",
+                Filter = "医学图像|*.dr|所有文件|*.*",
                 RestoreDirectory = true
             };
 
@@ -40,7 +45,7 @@ namespace ImageProcessing
 
                 try
                 {
-                    if (ofd.FilterIndex == 2)
+                    if (ofd.FilterIndex == 1)
                     {
                         ResultImage = OriginImage = ImageProcessing.GetImageFromDr(FilePath);
                     }
@@ -61,8 +66,14 @@ namespace ImageProcessing
                     return;
                 }
 
+                minRatio = (double)Math.Min(originPictureBox.Width, originPictureBox.Height) / Math.Max(OriginImage.Width, OriginImage.Height);
+                scaleRatio = minRatio;
+                isMouseDown = false;
+                PreMousePosition = new Point(0, 0);
+                PicturePosition = new Point(0, 0);
+
                 originPictureBox.Image = OriginImage;
-                resultPictureBox.Image = ResultImage;
+                refreshImage();
 
                 histogramForm.Init(OriginImage);
 
@@ -101,10 +112,23 @@ namespace ImageProcessing
             }
         }
 
-        // 刷新图片与直方图
+        // 刷新图片
         public void refreshImage()
         {
-            resultPictureBox.Image = ResultImage;
+            Bitmap bitmap = new Bitmap(resultPictureBox.Width, resultPictureBox.Height);
+            Rectangle rect = new Rectangle(
+                PicturePosition,
+                new Size((int)(ResultImage.Width * scaleRatio), (int)(ResultImage.Height * scaleRatio)));
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.DrawImage(ResultImage, rect);
+            }
+            resultPictureBox.Image = bitmap;
+        }
+
+        //刷新直方图
+        public void refreshHistogram()
+        {
             histogramForm.UpdateHistogram(ResultImage);
         }
 
@@ -133,6 +157,7 @@ namespace ImageProcessing
         {
             ResultImage = ImageProcessing.HistogramEqualization(OriginImage, true);
             refreshImage();
+            refreshHistogram();
         }
 
         // 直方图均衡(分通道)
@@ -140,6 +165,106 @@ namespace ImageProcessing
         {
             ResultImage = ImageProcessing.HistogramEqualization(OriginImage, false);
             refreshImage();
+            refreshHistogram();
+        }
+
+        // 灰度调整
+        private void imageAdjustToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ImageAdjustForm form = new ImageAdjustForm(this);
+            form.ShowDialog();
+        }
+
+        // 鼠标左键按下
+        private void resultPictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isMouseDown = true;
+                PreMousePosition = e.Location;
+            }
+        }
+
+        // 鼠标左键抬起
+        private void resultPictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isMouseDown = false;
+                PreMousePosition = e.Location;
+            }
+        }
+
+        // 拖动结果图片
+        private void resultPictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMouseDown && ResultImage != null)
+            {
+                PicturePosition.X += e.Location.X - PreMousePosition.X;
+                PicturePosition.Y += e.Location.Y - PreMousePosition.Y;
+                PreMousePosition = e.Location;
+                refreshImage();
+            }
+        }
+
+        // 缩放结果图片
+        private void resultPictureBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (ResultImage != null)
+            {
+                if (scaleRatio > minRatio / 2 || e.Delta > 0)
+                {
+                    double oldRatio = scaleRatio;
+                    scaleRatio = oldRatio + Math.Abs(e.Delta) / e.Delta * 0.05d;
+                    PicturePosition.X = (int)(e.X - (e.X - PicturePosition.X) * scaleRatio / oldRatio);
+                    PicturePosition.Y = (int)(e.Y - (e.Y - PicturePosition.Y) * scaleRatio / oldRatio);
+                }
+                else
+                {
+                    scaleRatio = minRatio / 2.1;
+                }
+                refreshImage();
+            }
+        }
+
+        // 重置图片大小
+        private void fixWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ResultImage != null)
+            {
+                minRatio = (double)Math.Min(originPictureBox.Width, originPictureBox.Height) / Math.Max(OriginImage.Width, OriginImage.Height);
+                scaleRatio = minRatio;
+                PreMousePosition = new Point(0, 0);
+                PicturePosition = new Point(0, 0);
+                refreshImage();
+            }
+        }
+
+        // 窗口缩放事件响应
+        private void ImageProcessingForm_SizeChanged(object sender, EventArgs e)
+        {
+            fixWindowToolStripMenuItem_Click(sender, e);
+        }
+
+        // 只显示原始图片
+        private void onlyShowOriginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OriginResultSplitContainer.Panel1Collapsed = false;
+            OriginResultSplitContainer.Panel2Collapsed = true;
+        }
+
+        // 只显示结果图片
+        private void onlyShowResultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OriginResultSplitContainer.Panel1Collapsed = true;
+            OriginResultSplitContainer.Panel2Collapsed = false;
+        }
+
+        // 原始结果全部显示
+        private void showBothToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OriginResultSplitContainer.Panel1Collapsed = false;
+            OriginResultSplitContainer.Panel2Collapsed = false;
         }
     }
 }

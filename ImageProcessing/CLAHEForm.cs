@@ -28,6 +28,7 @@ namespace ImageProcessing
             else
                 parentForm.ResultImage = ImageProcessing.CLAHE(parentForm.OriginImage, split, limit);
             parentForm.refreshImage();
+            parentForm.refreshHistogram();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
