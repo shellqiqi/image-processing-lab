@@ -634,7 +634,10 @@ namespace ImageProcessing
                 for (int x = 0; x < src.Width; x++)
                 {
                     double brightness = bitmap.GetPixel(x, y).GetBrightness();
-                    brightness = (brightness >= low_in && brightness <= high_in) ? brightness : 0d;
+                    if (brightness < low_in)
+                        brightness = 0d;
+                    if (brightness > high_in)
+                        brightness = 1d;
                     brightness = low_out + Math.Pow((brightness - low_in) / (high_in - low_in), gamma) * (high_out - low_out);
                     Byte val = (Byte)(brightness * 255);
                     bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
