@@ -132,52 +132,6 @@ namespace ImageProcessing
         }
 
         /// <summary>
-        ///读取医学图像
-        /// </summary>
-        public static Image GetImageFromDr(string filePath)
-        {
-            BinaryReader reader = new BinaryReader(new FileStream(filePath, FileMode.Open));
-            UInt16 width = reader.ReadUInt16();
-            UInt16 height = reader.ReadUInt16();
-            UInt16 BBP = reader.ReadUInt16();
-            UInt16 Sign = reader.ReadUInt16();
-            UInt16 MaxVal = reader.ReadUInt16();
-            Byte[] reserved = reader.ReadBytes(6);
-
-            Bitmap bitmap = new Bitmap(width, height);
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    int val = 0;
-                    if (BBP == 8)
-                    {
-                        if (Sign == 0)
-                            val = reader.ReadByte();
-                        else
-                            val = reader.ReadSByte();
-                    }
-                    else if (BBP == 16)
-                    {
-                        if (Sign == 0)
-                            val = reader.ReadUInt16();
-                        else
-                            val = reader.ReadInt16();
-                    }
-                    if (MaxVal != 255)
-                    {
-                        val = (int)((double)val / MaxVal * 255);
-                    }
-                    bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
-                }
-            }
-
-            reader.Close();
-
-            return bitmap;
-        }
-
-        /// <summary>
         ///HSV转化为RGB
         /// </summary>
         public static Color ColorFromHSV(double hue, double saturation, double value)
@@ -614,36 +568,6 @@ namespace ImageProcessing
                 }
             }
             return srcBitmap;
-        }
-
-        /// <summary>
-        ///灰度窗方法
-        /// </summary>
-        public static Image ImageAdjust(Image src,
-            double low_in = 0d, double high_in = 1d,
-            double low_out = 0d, double high_out = 1d,
-            double gamma = 0d)
-        {
-            Bitmap bitmap = new Bitmap(src);
-            if (high_in - low_in == 0 || gamma == 0)
-            {
-                return bitmap;
-            }
-            for (int y = 0; y < src.Height; y++)
-            {
-                for (int x = 0; x < src.Width; x++)
-                {
-                    double brightness = bitmap.GetPixel(x, y).GetBrightness();
-                    if (brightness <= low_in)
-                        brightness = 0d;
-                    else if (brightness >= high_in)
-                        brightness = 1d;
-                    else brightness = low_out + Math.Pow((brightness - low_in) / (high_in - low_in), gamma) * (high_out - low_out);
-                    Byte val = (Byte)(brightness * 255);
-                    bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
-                }
-            }
-            return bitmap;
         }
     }
 }

@@ -35,8 +35,6 @@
             this.splitLabel = new System.Windows.Forms.Label();
             this.limitLabel = new System.Windows.Forms.Label();
             this.limitNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.separateRGBLabel = new System.Windows.Forms.Label();
-            this.separateRGBCheckBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.limitNumericUpDown)).BeginInit();
@@ -53,8 +51,6 @@
             this.tableLayoutPanel1.Controls.Add(this.splitLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.limitLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.limitNumericUpDown, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.separateRGBLabel, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.separateRGBCheckBox, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -158,32 +154,6 @@
             0,
             0});
             // 
-            // separateRGBLabel
-            // 
-            this.separateRGBLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.separateRGBLabel.AutoSize = true;
-            this.separateRGBLabel.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.separateRGBLabel.Location = new System.Drawing.Point(34, 104);
-            this.separateRGBLabel.Margin = new System.Windows.Forms.Padding(10);
-            this.separateRGBLabel.Name = "separateRGBLabel";
-            this.separateRGBLabel.Size = new System.Drawing.Size(100, 20);
-            this.separateRGBLabel.TabIndex = 0;
-            this.separateRGBLabel.Text = "Separate RGB";
-            // 
-            // separateRGBCheckBox
-            // 
-            this.separateRGBCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.separateRGBCheckBox.AutoSize = true;
-            this.separateRGBCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.separateRGBCheckBox.Location = new System.Drawing.Point(154, 102);
-            this.separateRGBCheckBox.Margin = new System.Windows.Forms.Padding(10);
-            this.separateRGBCheckBox.Name = "separateRGBCheckBox";
-            this.separateRGBCheckBox.Size = new System.Drawing.Size(48, 24);
-            this.separateRGBCheckBox.TabIndex = 4;
-            this.separateRGBCheckBox.Text = "No";
-            this.separateRGBCheckBox.UseVisualStyleBackColor = true;
-            this.separateRGBCheckBox.CheckedChanged += new System.EventHandler(this.separateRGBCheckBox_CheckedChanged);
-            // 
             // CLAHEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -213,7 +183,5 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Label limitLabel;
         private System.Windows.Forms.NumericUpDown limitNumericUpDown;
-        private System.Windows.Forms.Label separateRGBLabel;
-        private System.Windows.Forms.CheckBox separateRGBCheckBox;
     }
 }

@@ -34,21 +34,20 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlyShowOriginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlyShowResultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showBothToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.histogramEqualizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.separatedRGBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allChannelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CLAHEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageAdjustToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.originPictureBox = new System.Windows.Forms.PictureBox();
             this.resultPictureBox = new System.Windows.Forms.PictureBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.fixWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OriginResultSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.onlyShowOriginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.onlyShowResultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showBothToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultPictureBox)).BeginInit();
@@ -98,8 +97,9 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fixWindowToolStripMenuItem,
             this.histogramToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.fixWindowToolStripMenuItem,
             this.onlyShowOriginToolStripMenuItem,
             this.onlyShowResultToolStripMenuItem,
             this.showBothToolStripMenuItem});
@@ -108,12 +108,40 @@
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(47, 21);
             this.viewToolStripMenuItem.Text = "&View";
             // 
+            // fixWindowToolStripMenuItem
+            // 
+            this.fixWindowToolStripMenuItem.Name = "fixWindowToolStripMenuItem";
+            this.fixWindowToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.fixWindowToolStripMenuItem.Text = "Fix window";
+            this.fixWindowToolStripMenuItem.Click += new System.EventHandler(this.fixWindowToolStripMenuItem_Click);
+            // 
             // histogramToolStripMenuItem
             // 
             this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
-            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.histogramToolStripMenuItem.Text = "Histogram";
             this.histogramToolStripMenuItem.Click += new System.EventHandler(this.HistogramToolStripMenuItem_Click);
+            // 
+            // onlyShowOriginToolStripMenuItem
+            // 
+            this.onlyShowOriginToolStripMenuItem.Name = "onlyShowOriginToolStripMenuItem";
+            this.onlyShowOriginToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.onlyShowOriginToolStripMenuItem.Text = "Only show origin";
+            this.onlyShowOriginToolStripMenuItem.Click += new System.EventHandler(this.onlyShowOriginToolStripMenuItem_Click);
+            // 
+            // onlyShowResultToolStripMenuItem
+            // 
+            this.onlyShowResultToolStripMenuItem.Name = "onlyShowResultToolStripMenuItem";
+            this.onlyShowResultToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.onlyShowResultToolStripMenuItem.Text = "Only show result";
+            this.onlyShowResultToolStripMenuItem.Click += new System.EventHandler(this.onlyShowResultToolStripMenuItem_Click);
+            // 
+            // showBothToolStripMenuItem
+            // 
+            this.showBothToolStripMenuItem.Name = "showBothToolStripMenuItem";
+            this.showBothToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.showBothToolStripMenuItem.Text = "Show both";
+            this.showBothToolStripMenuItem.Click += new System.EventHandler(this.showBothToolStripMenuItem_Click);
             // 
             // toolToolStripMenuItem
             // 
@@ -128,26 +156,10 @@
             // 
             // histogramEqualizationToolStripMenuItem
             // 
-            this.histogramEqualizationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.separatedRGBToolStripMenuItem,
-            this.allChannelsToolStripMenuItem});
             this.histogramEqualizationToolStripMenuItem.Name = "histogramEqualizationToolStripMenuItem";
             this.histogramEqualizationToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.histogramEqualizationToolStripMenuItem.Text = "Histogram Equalization";
-            // 
-            // separatedRGBToolStripMenuItem
-            // 
-            this.separatedRGBToolStripMenuItem.Name = "separatedRGBToolStripMenuItem";
-            this.separatedRGBToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.separatedRGBToolStripMenuItem.Text = "Separated RGB";
-            this.separatedRGBToolStripMenuItem.Click += new System.EventHandler(this.separatedRGBToolStripMenuItem_Click);
-            // 
-            // allChannelsToolStripMenuItem
-            // 
-            this.allChannelsToolStripMenuItem.Name = "allChannelsToolStripMenuItem";
-            this.allChannelsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.allChannelsToolStripMenuItem.Text = "All channels";
-            this.allChannelsToolStripMenuItem.Click += new System.EventHandler(this.allChannelsToolStripMenuItem_Click);
+            this.histogramEqualizationToolStripMenuItem.Click += new System.EventHandler(this.histogramEqualizationToolStripMenuItem_Click);
             // 
             // CLAHEToolStripMenuItem
             // 
@@ -190,50 +202,27 @@
             this.resultPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.resultPictureBox_MouseMove);
             this.resultPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.resultPictureBox_MouseUp);
             // 
-            // fixWindowToolStripMenuItem
-            // 
-            this.fixWindowToolStripMenuItem.Name = "fixWindowToolStripMenuItem";
-            this.fixWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.fixWindowToolStripMenuItem.Text = "Fix window";
-            this.fixWindowToolStripMenuItem.Click += new System.EventHandler(this.fixWindowToolStripMenuItem_Click);
-            // 
-            // splitContainer1
+            // OriginResultSplitContainer
             // 
             this.OriginResultSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OriginResultSplitContainer.Location = new System.Drawing.Point(0, 25);
-            this.OriginResultSplitContainer.Name = "splitContainer1";
+            this.OriginResultSplitContainer.Name = "OriginResultSplitContainer";
             // 
-            // splitContainer1.Panel1
+            // OriginResultSplitContainer.Panel1
             // 
             this.OriginResultSplitContainer.Panel1.Controls.Add(this.originPictureBox);
             // 
-            // splitContainer1.Panel2
+            // OriginResultSplitContainer.Panel2
             // 
             this.OriginResultSplitContainer.Panel2.Controls.Add(this.resultPictureBox);
             this.OriginResultSplitContainer.Size = new System.Drawing.Size(584, 286);
             this.OriginResultSplitContainer.SplitterDistance = 292;
             this.OriginResultSplitContainer.TabIndex = 3;
             // 
-            // onlyShowOriginToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.onlyShowOriginToolStripMenuItem.Name = "onlyShowOriginToolStripMenuItem";
-            this.onlyShowOriginToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.onlyShowOriginToolStripMenuItem.Text = "Only show origin";
-            this.onlyShowOriginToolStripMenuItem.Click += new System.EventHandler(this.onlyShowOriginToolStripMenuItem_Click);
-            // 
-            // onlyShowResultToolStripMenuItem
-            // 
-            this.onlyShowResultToolStripMenuItem.Name = "onlyShowResultToolStripMenuItem";
-            this.onlyShowResultToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.onlyShowResultToolStripMenuItem.Text = "Only show result";
-            this.onlyShowResultToolStripMenuItem.Click += new System.EventHandler(this.onlyShowResultToolStripMenuItem_Click);
-            // 
-            // showBothToolStripMenuItem
-            // 
-            this.showBothToolStripMenuItem.Name = "showBothToolStripMenuItem";
-            this.showBothToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.showBothToolStripMenuItem.Text = "Show both";
-            this.showBothToolStripMenuItem.Click += new System.EventHandler(this.showBothToolStripMenuItem_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(171, 6);
             // 
             // ImageProcessingForm
             // 
@@ -274,8 +263,6 @@
         private System.Windows.Forms.PictureBox resultPictureBox;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CLAHEToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem separatedRGBToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allChannelsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imageAdjustToolStripMenuItem;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolStripMenuItem fixWindowToolStripMenuItem;
@@ -283,6 +270,7 @@
         private System.Windows.Forms.ToolStripMenuItem onlyShowOriginToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onlyShowResultToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showBothToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

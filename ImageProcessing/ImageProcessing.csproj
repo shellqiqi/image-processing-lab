@@ -49,6 +49,7 @@
     <Compile Include="CLAHEForm.Designer.cs">
       <DependentUpon>CLAHEForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DRData.cs" />
     <Compile Include="HistogramForm.cs">
       <SubType>Form</SubType>
     </Compile>

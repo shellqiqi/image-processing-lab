@@ -183,11 +183,17 @@
             // lowInNumericUpDown
             // 
             this.lowInNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lowInNumericUpDown.DecimalPlaces = 3;
             this.lowInNumericUpDown.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lowInNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.lowInNumericUpDown.Location = new System.Drawing.Point(153, 10);
             this.lowInNumericUpDown.Margin = new System.Windows.Forms.Padding(10);
             this.lowInNumericUpDown.Maximum = new decimal(new int[] {
-            255,
+            1,
             0,
             0,
             0});
@@ -198,11 +204,17 @@
             // highInNumericUpDown
             // 
             this.highInNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.highInNumericUpDown.DecimalPlaces = 3;
             this.highInNumericUpDown.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.highInNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.highInNumericUpDown.Location = new System.Drawing.Point(153, 56);
             this.highInNumericUpDown.Margin = new System.Windows.Forms.Padding(10);
             this.highInNumericUpDown.Maximum = new decimal(new int[] {
-            255,
+            1,
             0,
             0,
             0});
@@ -210,7 +222,7 @@
             this.highInNumericUpDown.Size = new System.Drawing.Size(120, 26);
             this.highInNumericUpDown.TabIndex = 2;
             this.highInNumericUpDown.Value = new decimal(new int[] {
-            255,
+            1,
             0,
             0,
             0});
@@ -218,11 +230,17 @@
             // lowOutNumericUpDown
             // 
             this.lowOutNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lowOutNumericUpDown.DecimalPlaces = 3;
             this.lowOutNumericUpDown.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lowOutNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.lowOutNumericUpDown.Location = new System.Drawing.Point(153, 102);
             this.lowOutNumericUpDown.Margin = new System.Windows.Forms.Padding(10);
             this.lowOutNumericUpDown.Maximum = new decimal(new int[] {
-            255,
+            1,
             0,
             0,
             0});
@@ -233,11 +251,17 @@
             // highOutNumericUpDown
             // 
             this.highOutNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.highOutNumericUpDown.DecimalPlaces = 3;
             this.highOutNumericUpDown.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.highOutNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.highOutNumericUpDown.Location = new System.Drawing.Point(153, 148);
             this.highOutNumericUpDown.Margin = new System.Windows.Forms.Padding(10);
             this.highOutNumericUpDown.Maximum = new decimal(new int[] {
-            255,
+            1,
             0,
             0,
             0});
@@ -245,7 +269,7 @@
             this.highOutNumericUpDown.Size = new System.Drawing.Size(120, 26);
             this.highOutNumericUpDown.TabIndex = 2;
             this.highOutNumericUpDown.Value = new decimal(new int[] {
-            255,
+            1,
             0,
             0,
             0});
@@ -253,15 +277,15 @@
             // gammaNumericUpDown
             // 
             this.gammaNumericUpDown.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.gammaNumericUpDown.DecimalPlaces = 2;
+            this.gammaNumericUpDown.DecimalPlaces = 3;
             this.gammaNumericUpDown.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gammaNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
             this.gammaNumericUpDown.Location = new System.Drawing.Point(153, 194);
             this.gammaNumericUpDown.Margin = new System.Windows.Forms.Padding(10);
+            this.gammaNumericUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.gammaNumericUpDown.Name = "gammaNumericUpDown";
             this.gammaNumericUpDown.Size = new System.Drawing.Size(120, 26);
             this.gammaNumericUpDown.TabIndex = 2;

@@ -23,10 +23,7 @@ namespace ImageProcessing
         {
             int split = (int)splitNumericUpDown.Value;
             double limit = (double)limitNumericUpDown.Value;
-            if (separateRGBCheckBox.Checked)
-                parentForm.ResultImage = ImageProcessing.SeparatedChannelCLAHE(parentForm.OriginImage, split, limit);
-            else
-                parentForm.ResultImage = ImageProcessing.CLAHE(parentForm.OriginImage, split, limit);
+            parentForm.ResultImage = ImageProcessing.CLAHE(parentForm.OriginImage, split, limit);
             parentForm.refreshImage();
             parentForm.refreshHistogram();
         }
@@ -34,14 +31,6 @@ namespace ImageProcessing
         private void exitButton_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void separateRGBCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (separateRGBCheckBox.Checked)
-                separateRGBCheckBox.Text = "Yes";
-            else
-                separateRGBCheckBox.Text = "No";
         }
     }
 }

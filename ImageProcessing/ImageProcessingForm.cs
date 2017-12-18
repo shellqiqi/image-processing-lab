@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ImageProcessing
 {
@@ -20,6 +21,7 @@ namespace ImageProcessing
         }
 
         public String FilePath { get; set; }
+        public DRData Data { get; set; }
         public Image OriginImage { get; set; }
         public Image ResultImage { get; set; }
         public HistogramForm histogramForm;
@@ -35,7 +37,7 @@ namespace ImageProcessing
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = Application.StartupPath,
-                Filter = "医学图像|*.dr|所有文件|*.*",
+                Filter = "医学图像|*.dr",
                 RestoreDirectory = true
             };
 
@@ -45,14 +47,8 @@ namespace ImageProcessing
 
                 try
                 {
-                    if (ofd.FilterIndex == 1)
-                    {
-                        ResultImage = OriginImage = ImageProcessing.GetImageFromDr(FilePath);
-                    }
-                    else
-                    {
-                        ResultImage = OriginImage = Image.FromFile(FilePath);
-                    }
+                    Data = new DRData(FilePath);
+                    ResultImage = OriginImage = Data.GetImage();
                 }
                 catch (Exception exp)
                 {
@@ -152,22 +148,6 @@ namespace ImageProcessing
             form.ShowDialog();
         }
 
-        // 直方图均衡(全通道)
-        private void separatedRGBToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ResultImage = ImageProcessing.HistogramEqualization(OriginImage, true);
-            refreshImage();
-            refreshHistogram();
-        }
-
-        // 直方图均衡(分通道)
-        private void allChannelsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ResultImage = ImageProcessing.HistogramEqualization(OriginImage, false);
-            refreshImage();
-            refreshHistogram();
-        }
-
         // 灰度调整
         private void imageAdjustToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -265,6 +245,14 @@ namespace ImageProcessing
         {
             OriginResultSplitContainer.Panel1Collapsed = false;
             OriginResultSplitContainer.Panel2Collapsed = false;
+        }
+
+        // 直方图均衡化
+        private void histogramEqualizationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResultImage = ImageProcessing.HistogramEqualization(OriginImage, false);
+            refreshImage();
+            refreshHistogram();
         }
     }
 }
