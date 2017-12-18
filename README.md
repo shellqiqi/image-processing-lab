@@ -1,7 +1,14 @@
-# ImageProcessing
-Digital Image Processing Project Using Winform
+# 数字图像处理实验
 
-## Functions
-- Display histogram
-- Histogram equalization
-- CLAHE
+实验开发了一个基于WinForm处理并显示医学透视图象的软件。软件支持自定义文件格式（dr文件格式），也可处理常见的图像格式（比如jpeg、png、bmp等），并支持导出成常见图像格式。支持显示三通道直方图，拥有直方图均衡、CLAHE和灰度窗处理方法。软件支持图片平移和缩放，原图像和结果图像支持对比显示和单个显示，原图像居左而结果图像居右。软件如下图所示。
+
+![Overview](assets/overview.png)
+
+## 软件功能
+
+### 图像文件打开和保存
+
+菜单栏上点击File（文件），出现Open（打开）和Save（保存）选单进行文件的打开和保存。打开图像时结果图像与打开图像一致。保存功能只保存结果图像。
+
+### 图像显示设置
+
