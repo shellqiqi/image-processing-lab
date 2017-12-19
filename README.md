@@ -18,19 +18,25 @@
 
 ### 直方图显示
 
-菜单栏上点击View，其中的Histogram将显示原图片和结果图片的直方图，并且支持在后台显示，效果如下图所示。
+菜单栏上点击View，其中的Histogram（显示直方图）将显示原图片和结果图片的直方图，并且支持在后台显示，效果如下图所示。
 
 ![Histogram](assets/histogram.png)
 
 ### 直方图均衡
 
-![]()
+菜单栏上点击Tool（工具），其中的Histogram Equalization（直方图均衡）可以将原图像全局进行直方图均衡并显示到结果图像上，效果如下图所示。
+
+![Histogram Equalization](assets/histogramEqualization.png)
 
 ### 对比度受限的自适应直方图均衡化（CLAHE）
 
-![]()
+菜单栏上点击Tool，其中的CLAHE可以将原图像全局进行对比度受限的自适应直方图均衡并显示到结果图像上。该操作有两个参数可以调整，其中Split count（分割个数）将整个图像横纵分割为若干大小进行自适应直方图均衡，该参数越大局域对比度越高，过大可能会造成图像失真以及信息丢失；Contrast limit（对比度限制）将限制图像对比度从而减少噪声，该限制值为原图平均对比度的倍数，最值小为1且可为小数，值越大对比度越高。默认值Split count为8，Contrast limit为40，建议Split count调整为2的倍数。参数选好之后可以选择Execute（执行）来预览效果，Exit（退出）可以回到主界面。效果如下图所示。
+
+![CLAHE](assets/clahe.png)
 
 ### 灰度窗方法
+
+
 
 ![]()
 
