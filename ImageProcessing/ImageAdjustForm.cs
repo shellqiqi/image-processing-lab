@@ -21,19 +21,36 @@ namespace ImageProcessing
 
         private void executeButton_Click(object sender, EventArgs e)
         {
-            double low_in = (double)lowInNumericUpDown.Value;
-            double high_in = (double)highInNumericUpDown.Value;
-            double low_out = (double)lowOutNumericUpDown.Value;
-            double high_out = (double)highOutNumericUpDown.Value;
-            double gamma = (double)gammaNumericUpDown.Value;
+            float low_in = (float)lowInNumericUpDown.Value;
+            float high_in = (float)highInNumericUpDown.Value;
+            float low_out = (float)lowOutNumericUpDown.Value;
+            float high_out = (float)highOutNumericUpDown.Value;
+            float gamma = (float)gammaNumericUpDown.Value;
             parentForm.ResultImage = parentForm.Data.GetImage(low_in, high_in, low_out, high_out, gamma);
             parentForm.refreshImage();
+            parentForm.copyResultToOrigin();
             parentForm.refreshHistogram();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void lowInNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (lowInNumericUpDown.Value >= highInNumericUpDown.Value)
+            {
+                lowInNumericUpDown.Value = highInNumericUpDown.Value;
+            }
+        }
+
+        private void highInNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (lowInNumericUpDown.Value >= highInNumericUpDown.Value)
+            {
+                highInNumericUpDown.Value = lowInNumericUpDown.Value;
+            }
         }
     }
 }

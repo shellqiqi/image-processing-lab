@@ -200,6 +200,7 @@
             this.lowInNumericUpDown.Name = "lowInNumericUpDown";
             this.lowInNumericUpDown.Size = new System.Drawing.Size(120, 26);
             this.lowInNumericUpDown.TabIndex = 2;
+            this.lowInNumericUpDown.ValueChanged += new System.EventHandler(this.lowInNumericUpDown_ValueChanged);
             // 
             // highInNumericUpDown
             // 
@@ -226,6 +227,7 @@
             0,
             0,
             0});
+            this.highInNumericUpDown.ValueChanged += new System.EventHandler(this.highInNumericUpDown_ValueChanged);
             // 
             // lowOutNumericUpDown
             // 

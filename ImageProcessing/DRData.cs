@@ -61,21 +61,21 @@ namespace ImageProcessing
         /// <param name="high">from 0 to 1</param>
         /// <returns>Image</returns>
         public Image GetImage(
-            double low_in = 0d, double high_in = 1d,
-            double low_out = 0d, double high_out = 1d,
-            double gamma = 1d)
+            float low_in = 0f, float high_in = 1f,
+            float low_out = 0f, float high_out = 1f,
+            float gamma = 1f)
         {
             Bitmap bitmap = new Bitmap(Width, Height);
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    double brightness = (double)RawData[x, y] / MaxVal;
+                    float brightness = (float)RawData[x, y] / MaxVal;
                     if (brightness <= low_in)
-                        brightness = low_in;
+                        brightness = 0f;
                     else if (brightness >= high_in)
-                        brightness = high_in;
-                    else brightness = low_out + Math.Pow((brightness - low_in) / (high_in - low_in), gamma) * (high_out - low_out);
+                        brightness = 1f;
+                    brightness = low_out + (float)Math.Pow((brightness - low_in) / (high_in - low_in), gamma) * (high_out - low_out);
                     Byte val = (Byte)(brightness * 255);
                     bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
                 }

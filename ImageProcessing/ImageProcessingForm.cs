@@ -122,6 +122,13 @@ namespace ImageProcessing
             resultPictureBox.Image = bitmap;
         }
 
+        // 从结果图像生成新的原图片
+        public void copyResultToOrigin()
+        {
+            OriginImage = ResultImage;
+            originPictureBox.Image = OriginImage;
+        }
+
         //刷新直方图
         public void refreshHistogram()
         {
