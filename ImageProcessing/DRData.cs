@@ -72,9 +72,9 @@ namespace ImageProcessing
                 {
                     float brightness = (float)RawData[x, y] / MaxVal;
                     if (brightness <= low_in)
-                        brightness = 0f;
+                        brightness = low_in;
                     else if (brightness >= high_in)
-                        brightness = 1f;
+                        brightness = high_in;
                     brightness = low_out + (float)Math.Pow((brightness - low_in) / (high_in - low_in), gamma) * (high_out - low_out);
                     Byte val = (Byte)(brightness * 255);
                     bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
